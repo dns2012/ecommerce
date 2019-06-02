@@ -6,9 +6,9 @@ const bcrypt    = require("bcrypt");
 
 const moment    = require("moment");
 
-const userModel = require("../models/user");
+const userModel = require("../../models/user");
 
-const tokenHelper = require("../helpers/token");
+const tokenHelper = require("../../helpers/token");
 
 router.get("/token", (req, res) => {
     const tokenPayload = {

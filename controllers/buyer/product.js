@@ -2,9 +2,9 @@ const express   = require("express");
 
 const router    = express.Router();
 
-const productModel = require("../models/product");
+const productModel = require("../../models/product");
 
-const tokenHelper = require("../helpers/token");
+const tokenHelper = require("../../helpers/token");
 
 router.get("/", (req, res) => {
     let sort = req.query.sort;
