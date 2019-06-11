@@ -51,11 +51,12 @@ router.get("/province", (req, res) => {
 router.get("/province/:id", (req, res) => {
     tokenHelper.verifyToken(req.headers.token, (callback) => {
         if(callback == "valid") {
+            let provinceId = req.params.id;
             let options = {
                 "method": "GET",
                 "hostname": "api.rajaongkir.com",
                 "port": null,
-                "path": "/starter/province?id=" + req.params.id,
+                "path": "/starter/province?id=" + provinceId,
                 "headers": {
                     "key": process.env.RAJA_ONGKIR_KEY
                 }
@@ -89,11 +90,12 @@ router.get("/province/:id", (req, res) => {
 router.get("/city", (req, res) => {
     tokenHelper.verifyToken(req.headers.token, (callback) => {
         if(callback == "valid") {
+            let provinceId = req.query.province;
             let options = {
                 "method": "GET",
                 "hostname": "api.rajaongkir.com",
                 "port": null,
-                "path": "/starter/city?province=" + req.query.province,
+                "path": "/starter/city?province=" + provinceId,
                 "headers": {
                     "key": process.env.RAJA_ONGKIR_KEY
                 }
@@ -127,11 +129,12 @@ router.get("/city", (req, res) => {
 router.get("/city/:id", (req, res) => {
     tokenHelper.verifyToken(req.headers.token, (callback) => {
         if(callback == "valid") {
+            let cityId = req.params.id;
             let options = {
                 "method": "GET",
                 "hostname": "api.rajaongkir.com",
                 "port": null,
-                "path": "/starter/city?id=" + req.params.id,
+                "path": "/starter/city?id=" + cityId,
                 "headers": {
                     "key": process.env.RAJA_ONGKIR_KEY
                 }
@@ -165,6 +168,10 @@ router.get("/city/:id", (req, res) => {
 router.post("/cost", (req, res) => {
     tokenHelper.verifyToken(req.headers.token, (callback) => {
         if(callback == "valid") {
+            let origin = req.body.origin;
+            let destination = req.body.destination;
+            let weight = req.body.weight;
+            let courier = req.body.courier;
             let options = {
                 "method": "POST",
                 "hostname": "api.rajaongkir.com",
@@ -193,10 +200,10 @@ router.post("/cost", (req, res) => {
                 });
             });
             request.write(qs.stringify({
-                origin : req.body.origin,
-                destination: req.body.destination,
-                weight: req.body.weight,
-                courier: req.body.courier
+                origin : origin,
+                destination: destination,
+                weight: weight,
+                courier: courier
             }))
             request.end();
         } else {

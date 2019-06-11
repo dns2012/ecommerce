@@ -93,7 +93,8 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
     tokenHelper.verifyToken(req.headers.token, (callback) => {
         if(callback == "valid") {
-            userAddressModel.getById(req.params.id, (results) => {
+            let addressId = req.params.id;
+            userAddressModel.getById(addressId, (results) => {
                 res.status(201).json({
                     status : true,
                     data : results
@@ -158,7 +159,8 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     tokenHelper.verifyToken(req.headers.token, (callback) => {
         if(callback == "valid") {
-            userAddressModel.deleteById(req.params.id, (results) => {
+            let addressId = req.params.id;
+            userAddressModel.deleteById(addressId, (results) => {
                 if(results == "success") {
                     res.status(201).json({
                         status : true,
@@ -180,10 +182,51 @@ router.delete("/:id", (req, res) => {
     })
 })
 
-router.get("/doom", (req, res) => {
-    console.log('oke');
-    res.status(200).json({
-        message : "oke"
+router.get("/default/user", (req, res) => {
+    tokenHelper.verifyToken(req.headers.token, (callback) => {
+        if(callback == "valid") {
+            let userId = req.query.id;
+            userAddressModel.getByUserDefault(userId, (results) => {
+                res.status(201).json({
+                    status : true,
+                    data : results
+                })
+            })
+        } else {
+            res.status(400).json({
+                status : false,
+                message : "invalid token"
+            })
+        }
+    })
+})
+
+
+router.put("/default/:id", (req, res) => {
+    tokenHelper.verifyToken(req.headers.token, (callback) => {
+        if(callback == "valid") {
+            let userId = req.body.userId;
+            let addressId = req.params.id;
+            userAddressModel.setNeutral(userId, (results) => {
+                if(results == "success") {
+                    userAddressModel.setByUserDefault(addressId, (results) => {
+                        if(results == "success") {
+                            userAddressModel.getByUser(userId, (results) => {
+                                res.status(201).json({
+                                    status : true,
+                                    data : results
+                                })
+                            })
+                        }
+                    })
+                }
+            })
+        } else {
+            res.status(400).json({
+                status : false,
+                message : "invalid token"
+            })
+        }
     })
 })
 

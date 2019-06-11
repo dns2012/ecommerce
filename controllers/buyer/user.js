@@ -9,7 +9,8 @@ const tokenHelper = require("../../helpers/token");
 router.get("/:id", (req, res) => {
     tokenHelper.verifyToken(req.headers.token, (callback) => {
         if(callback == "valid") {
-            userModel.getById(req.params.id, (results) => {
+            let userId = req.params.id;
+            userModel.getById(userId, (results) => {
                 if(results[0]) {
                     res.status(200).json({
                         status : true,
@@ -35,8 +36,10 @@ router.get("/:id", (req, res) => {
 router.put("/:id", (req, res) => {
     tokenHelper.verifyToken(req.headers.token, (callback) => {
         if(callback == "valid") {
-            userModel.updateUser(req.body, req.params.id, (results) => {
-                userModel.getById(req.params.id, (results) => {
+            let body = req.body;
+            let userId = req.params.id;
+            userModel.updateUser(body, userId, (results) => {
+                userModel.getById(userId, (results) => {
                     if(results[0]) {
                         res.status(200).json({
                             status : true,

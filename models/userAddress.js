@@ -2,7 +2,7 @@ const database  = require("../database");
 
 module.exports = {
     countByUser : (id, callback) => {
-        let sql = "SELECT COUNT(*) as total FROM user_address WHERE user_id=?";
+        let sql = `SELECT COUNT(*) as total FROM user_address WHERE user_id=?`;
         database.query(sql, [id])
         .then(rows => {
             callback(rows[0].total)
@@ -10,7 +10,7 @@ module.exports = {
     },
 
     addAddress : (object, callback) => {
-        let sql = "INSERT INTO user_address SET ?";
+        let sql = `INSERT INTO user_address SET ?`;
         database.query(sql, object)
         .then(rows => {
             callback("success")
@@ -18,7 +18,8 @@ module.exports = {
     },
 
     getByUser : (id, callback) => {
-        let sql = "SELECT id, user_id, province_name, city_name, postal, address, status FROM user_address WHERE user_id=?";
+        let sql = `SELECT id, user_id, province_name, city_name, postal, address, 
+                  status FROM user_address WHERE user_id=?`;
         database.query(sql, [id])
         .then(rows => {
             callback(rows)
@@ -26,7 +27,8 @@ module.exports = {
     },
 
     getById : (id, callback) => {
-        let sql = "SELECT id, user_id, province_name, city_name, postal, address, status FROM user_address WHERE id=?";
+        let sql = `SELECT id, user_id, province_name, city_name, postal, address, 
+                  status FROM user_address WHERE id=?`;
         database.query(sql, [id])
         .then(rows => {
             callback(rows)
@@ -34,7 +36,7 @@ module.exports = {
     },
 
     updateAddress : (id, object, callback) => {
-        let sql = "UPDATE user_address SET ? WHERE id=?";
+        let sql = `UPDATE user_address SET ? WHERE id=?`;
         database.query(sql, [object, id])
         .then(rows => {
             callback("success")
@@ -42,7 +44,7 @@ module.exports = {
     },
 
     deleteById : (id, callback) => {
-        let sql = "DELETE FROM user_address WHERE id=?";
+        let sql = `DELETE FROM user_address WHERE id=?`;
         database.query(sql, [id])
         .then(rows => {
             callback("success")
@@ -50,10 +52,27 @@ module.exports = {
     },
 
     getByUserDefault : (id, callback) => {
-        let sql = "SELECT id, user_id, province_name, city_name, postal, address, status FROM user_address WHERE user_id=? AND status='1'";
+        let sql = `SELECT id, user_id, province_name, city_name, postal, address, 
+                  status FROM user_address WHERE user_id=? AND status='1'`;
         database.query(sql, [id])
         .then(rows => {
             callback(rows)
         })
     },
+
+    setNeutral : (id, callback) => {
+        let sql = `UPDATE user_address SET status='0' WHERE user_id=?`;
+        database.query(sql, [id])
+        .then(rows => {
+            callback("success")
+        })
+    },
+
+    setByUserDefault : (id, callback) => {
+        let sql = `UPDATE user_address SET status='1' WHERE id=?`;
+        database.query(sql, [id])
+        .then(rows => {
+            callback("success")
+        })
+    }
 }
