@@ -48,24 +48,29 @@ module.exports = {
         let query;
         if(sort == "popular") {
             query = `SELECT *, (SELECT ROUND(AVG(rating),1) FROM product_rating WHERE
-                    product_rating.product_id = product.id) as rating FROM product
-                    ORDER BY view DESC LIMIT ? OFFSET ?`
+                    product_rating.product_id = product.id) as rating, (SELECT name
+                    FROM product_image WHERE product_image.product_id = product.id LIMIT 1) 
+                    as image FROM product ORDER BY view DESC LIMIT ? OFFSET ?`
         } else if(sort == "latest") {
             query = `SELECT *, (SELECT ROUND(AVG(rating),1) FROM product_rating WHERE
-                    product_rating.product_id = product.id) as rating FROM product
-                    ORDER BY created_at DESC LIMIT ? OFFSET ?`
+                    product_rating.product_id = product.id) as rating, (SELECT name
+                    FROM product_image WHERE product_image.product_id = product.id LIMIT 1) 
+                    as image FROM product ORDER BY created_at DESC LIMIT ? OFFSET ?`
         } else if(sort == "cheapest") {
             query = `SELECT *, (SELECT ROUND(AVG(rating),1) FROM product_rating WHERE
-                    product_rating.product_id = product.id) as rating FROM product
-                    ORDER BY price ASC LIMIT ? OFFSET ?`
+                    product_rating.product_id = product.id) as rating, (SELECT name
+                    FROM product_image WHERE product_image.product_id = product.id LIMIT 1) 
+                    as image FROM product ORDER BY price ASC LIMIT ? OFFSET ?`
         } else if(sort == "expensive") {
             query = `SELECT *, (SELECT ROUND(AVG(rating),1) FROM product_rating WHERE
-                    product_rating.product_id = product.id) as rating FROM product
-                    ORDER BY price DESC LIMIT ? OFFSET ?`
+                    product_rating.product_id = product.id) as rating, (SELECT name
+                    FROM product_image WHERE product_image.product_id = product.id LIMIT 1) 
+                    as image FROM product ORDER BY price DESC LIMIT ? OFFSET ?`
         } else {
             query = `SELECT *, (SELECT ROUND(AVG(rating),1) FROM product_rating WHERE
-                    product_rating.product_id = product.id) as rating FROM product
-                    ORDER BY view DESC LIMIT ? OFFSET ?`
+                    product_rating.product_id = product.id) as rating, (SELECT name
+                    FROM product_image WHERE product_image.product_id = product.id LIMIT 1) 
+                    as image FROM product ORDER BY view DESC LIMIT ? OFFSET ?`
         }
         database.query(query, [limit, offset])
         .then(rows => {

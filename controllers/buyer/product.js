@@ -21,7 +21,6 @@ router.get("/", (req, res) => {
     let limit = parseInt(req.query.limit);
     let preOffset = page * limit;
     let offset = preOffset - limit;
-    console.log(offset);
     productModel.getAll(sort, limit, offset, (results) => {
         res.status(200).json({
             status : true,
