@@ -34,6 +34,9 @@ module.exports = {
             return productImage;
         })
         .then(() => {
+            let view = parseInt(product[0].view) + 1;
+            let sql = `UPDATE product SET view=? WHERE id=?`;
+            database.query(sql, [view, product[0].id]);
             let obj = {
                 product : product[0],
                 productSpecification : productSpecification,
