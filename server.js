@@ -16,6 +16,7 @@ const productBuyer = require("./controllers/buyer/product");
 const shipmentBuyer = require("./controllers/buyer/shipment");
 const addressBuyer = require("./controllers/buyer/address");
 const categoryBuyer = require("./controllers/buyer/category");
+const cartBuyer = require("./controllers/buyer/cart");
 
 // CROSS ORIGIN
 app.use((req, res, next) => {
@@ -42,6 +43,7 @@ app.use("/buyer/product", productBuyer);
 app.use("/buyer/shipment", shipmentBuyer);
 app.use("/buyer/address", addressBuyer);
 app.use("/buyer/category", categoryBuyer);
+app.use("/buyer/cart", cartBuyer);
 
 // PUBLIC STATIC DIRECTORY
 // app.use(express.static(process.env.PWD + "/public"))
