@@ -29,6 +29,21 @@ router.get("/", (req, res) => {
     })
 })
 
+router.get("/category/:id", (req, res) => {
+    let categoryId = req.params.id;
+    let sort = req.query.sort;
+    let page = parseInt(req.query.page);
+    let limit = parseInt(req.query.limit);
+    let preOffset = page * limit;
+    let offset = preOffset - limit;
+    productModel.getAllByCategory(categoryId, sort, limit, offset, (results) => {
+        res.status(200).json({
+            status : true,
+            data : results
+        })
+    })
+})
+
 router.get("/:id", (req, res) => {
     let productId = req.params.id;
     productModel.getById(productId, (results) => {

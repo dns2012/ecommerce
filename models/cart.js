@@ -32,9 +32,10 @@ module.exports = {
     },
 
     getByUser : (userId, callback) => {
-        let sql = `SELECT cart.id as cart_id, cart.quantity, product.name as product_name, product.price,
-                  seller.image as seller_image, seller.id as seller_id, seller.name as seller_name, 
-                  product_image.name as product_image FROM cart INNER JOIN product
+        let sql = `SELECT cart.id as cart_id, cart.quantity, cart.attribute, product.id as product_id,  
+                  product.name as product_name, product.price, product_image.name as product_image, 
+                  seller.image as seller_image, seller.id as seller_id, seller.name  as seller_name 
+                  FROM cart INNER JOIN product
                   ON product.id = cart.product_id INNER JOIN seller
                   ON seller.id = product.seller_id INNER JOIN product_image
                   ON product_image.id = product.id WHERE cart.user_id=?`;
@@ -43,4 +44,15 @@ module.exports = {
             callback(rows)
         })
     },
+
+    deleteCart : (cartId, callback) => {
+        let sql = `DELETE FROM cart WHERE id=?`;
+        database.query(sql, [cartId])
+        .then(rows => {
+            callback("success");    
+        })
+        .catch(error => {
+            callback("error");
+        })
+    }
 }
