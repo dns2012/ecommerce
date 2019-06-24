@@ -19,6 +19,8 @@ const categoryBuyer = require("./controllers/buyer/category");
 const cartBuyer = require("./controllers/buyer/cart");
 const checkoutBuyer = require("./controllers/buyer/checkout");
 
+const authSeller = require("./controllers/seller/auth");
+
 // CROSS ORIGIN
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -46,6 +48,9 @@ app.use("/buyer/address", addressBuyer);
 app.use("/buyer/category", categoryBuyer);
 app.use("/buyer/cart", cartBuyer);
 app.use("/buyer/checkout", checkoutBuyer);
+
+app.use("/seller/auth", authSeller);
+
 
 // PUBLIC STATIC DIRECTORY
 // app.use(express.static(process.env.PWD + "/public"))
