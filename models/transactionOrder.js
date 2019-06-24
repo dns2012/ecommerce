@@ -3,7 +3,7 @@ const database  = require("../database");
 const moment    = require("moment");
 
 module.exports = {
-    addTransactionOrder : (object, product, callback) => {
+    addTransactionOrder : (object, product, userId, callback) => {
         let sql = `INSERT INTO transaction_order SET ?`;
         database.query(sql, [object])
         .then(rows => {
@@ -26,6 +26,10 @@ module.exports = {
                 };
                 var sqlProduct = `INSERT INTO transaction_order_product SET ?`;
                 database.query(sqlProduct, productObject);
+                var sqlProductMinQty = `UPDATE product SET quantity = quantity-? WHERE id=?`;
+                database.query(sqlProductMinQty, [quantity, productId]);
+                var sqlCartDelete = `DELETE FROM cart WHERE product_id=? AND user_id=?`;
+                database.query(sqlCartDelete, [productId, userId]);
             }
             callback(rows.insertId);
         })
