@@ -3,7 +3,7 @@ const mysql = require('promise-mysql');
 const database = mysql.createPool({
     host : 'localhost',
     user : 'root',
-    password : 'acception',
+    password : 'Php7.0Native',
     database : 'ecommerce'
 })
 
