@@ -80,12 +80,14 @@ router.get("/user", (req, res) => {
                             sellerId : resultsOne[i].seller_id,
                             sellerName : resultsOne[i].seller_name,
                             sellerImage : resultsOne[i].seller_image,
-                            product : []
+                            product : [], 
+                            subtotal : 0
                         }
                         seller.push(resultsOne[i].seller_id);
                         cart.push(cartObject);
                     }
                 }
+                var total = 0;
                 for(var i in cart) {
                     var cartSubtotal = 0;
                     for(var u in resultsOne) {
@@ -103,12 +105,18 @@ router.get("/user", (req, res) => {
                                 attribute : JSON.parse(resultsOne[u].attribute)
                             }
                             cart[i].product.push(productObject);
+                            cart[i].subtotal = cartSubtotal;
                         }
                     }
+                    total += cartSubtotal;
+                }
+                let finalCart = {
+                    cart : cart,
+                    total : total
                 }
                 res.status(200).json({
                     message : "oke",
-                    data : cart
+                    data : finalCart
                 })
             })
         } else {
