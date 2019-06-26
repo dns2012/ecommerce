@@ -126,4 +126,28 @@ router.post("/", (req, res) => {
     })
 })
 
+router.get("/", (req, res) => {
+    tokenHelper.verifyToken(req.headers.token, (callback) => {
+        if(callback == "valid") {
+            let sellerId = req.query.seller;
+            let sort = req.query.sort;
+            let page = parseInt(req.query.page);
+            let limit = parseInt(req.query.limit);
+            let preOffset = page * limit;
+            let offset = preOffset - limit;
+            productModel.getAllSeller(sellerId, sort, limit, offset, (results) => {
+                res.status(200).json({
+                    status : true,
+                    data : results
+                })
+            })
+        } else {
+            res.status(400).json({
+                status : false,
+                message : "invalid token"
+            })
+        }
+    })
+})
+
 module.exports = router;
