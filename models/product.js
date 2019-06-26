@@ -113,5 +113,16 @@ module.exports = {
         .then(rows => {
             callback(rows)
         })
+    },
+
+    addProduct : (object, callback) => {
+        let sql = `INSERT INTO product SET ?`;
+        database.query(sql, [object])
+        .then(rows => {
+            callback(rows.insertId);
+        })
+        .catch(error => {
+            callback("error");
+        })
     }
 }

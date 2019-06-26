@@ -20,6 +20,8 @@ const cartBuyer = require("./controllers/buyer/cart");
 const checkoutBuyer = require("./controllers/buyer/checkout");
 
 const authSeller = require("./controllers/seller/auth");
+const categorySeller = require("./controllers/seller/category");
+const productSeller = require("./controllers/seller/product");
 
 // CROSS ORIGIN
 app.use((req, res, next) => {
@@ -50,10 +52,12 @@ app.use("/buyer/cart", cartBuyer);
 app.use("/buyer/checkout", checkoutBuyer);
 
 app.use("/seller/auth", authSeller);
+app.use("/seller/category", categorySeller);
+app.use("/seller/product", productSeller);
 
 
 // PUBLIC STATIC DIRECTORY
-// app.use(express.static(process.env.PWD + "/public"))
+app.use(express.static(process.env.PWD + "/public"))
 
 
 app.get("/", (req, res, next) => {
