@@ -1,0 +1,240 @@
+const express   = require("express");
+
+const router    = express.Router();
+
+const moment    = require("moment");
+
+const tokenHelper = require("../../helpers/token");
+
+const sellerAddressModel = require("../../models/sellerAddress")
+
+router.post("/", (req, res) => {
+    tokenHelper.verifyToken(req.headers.token, (callback) => {
+        if(callback == "valid") {
+            sellerAddressModel.countBySeller(req.body.userId, (results) => {
+                var status;
+                if(results > 0) {
+                    status = 0
+                } else {
+                    status = 1
+                }
+                let userId = req.body.userId;
+                let inProvince = req.body.province;
+                let province = inProvince.split("-");
+                let provinceId = parseInt(province[0]);
+                let provinceName = province[1];
+                let inCity = req.body.city;
+                let city = inCity.split("-");
+                let cityId = parseInt(city[0]);
+                let cityName = city[1];
+                let postal = req.body.postal;
+                let address = req.body.address;
+                let phone = req.body.phone;
+                let latitude = req.body.latitude;
+                let longitude = req.body.longitude;
+                let createdAt = moment().format("YYYY-MM-DD HH:mm:ss");
+                let updatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
+                let sellerAddressObject = {
+                    id : 0,
+                    seller_id : userId,
+                    province_id : provinceId,
+                    province_name : provinceName,
+                    city_id : cityId,
+                    city_name : cityName,
+                    postal : postal,
+                    address : address,
+                    status : status,
+                    phone : phone,
+                    latitude : latitude,
+                    longitude : longitude,
+                    created_at : createdAt,
+                    updated_at : updatedAt
+                }
+                sellerAddressModel.addAddress(sellerAddressObject, (results) => {
+                    if(results == "success") {
+                        sellerAddressModel.getBySeller(userId, (results) => {
+                            res.status(201).json({
+                                status : true,
+                                data : results
+                            })
+                        })
+                    } else {
+                        res.status(400).json({
+                            status : false,
+                            message : "some error occured"
+                        })
+                    }
+                })
+            })
+            
+        } else {
+            res.status(400).json({
+                status : false,
+                message : "invalid token"
+            })
+        }
+    })
+})
+
+router.get("/", (req, res) => {
+    tokenHelper.verifyToken(req.headers.token, (callback) => {
+        if(callback == "valid") {
+            let userId = req.query.user;
+            sellerAddressModel.getBySeller(userId, (results) => {
+                res.status(201).json({
+                    status : true,
+                    data : results
+                })
+            })
+        } else {
+            res.status(400).json({
+                status : false,
+                message : "invalid token"
+            })
+        }
+    })
+})
+
+
+router.get("/:id", (req, res) => {
+    tokenHelper.verifyToken(req.headers.token, (callback) => {
+        if(callback == "valid") {
+            let addressId = req.params.id;
+            sellerAddressModel.getById(addressId, (results) => {
+                res.status(201).json({
+                    status : true,
+                    data : results
+                })
+            })
+        } else {
+            res.status(400).json({
+                status : false,
+                message : "invalid token"
+            })
+        }
+    })
+})
+
+router.put("/:id", (req, res) => {
+    tokenHelper.verifyToken(req.headers.token, (callback) => {
+        if(callback == "valid") {
+            let inProvince = req.body.province;
+            let province = inProvince.split("-");
+            let provinceId = parseInt(province[0]);
+            let provinceName = province[1];
+            let inCity = req.body.city;
+            let city = inCity.split("-");
+            let cityId = parseInt(city[0]);
+            let cityName = city[1];
+            let postal = req.body.postal;
+            let address = req.body.address;
+            let updatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
+            let sellerAddressObject = {
+                province_id : provinceId,
+                province_name : provinceName,
+                city_id : cityId,
+                city_name : cityName,
+                postal : postal,
+                address : address,
+                updated_at : updatedAt
+            }
+            sellerAddressModel.updateAddress(req.params.id, sellerAddressObject, (results) => {
+                if(results == "success") {
+                    sellerAddressModel.getById(req.params.id, (results) => {
+                        res.status(201).json({
+                            status : true,
+                            data : results
+                        })
+                    })
+                } else {
+                    res.status(400).json({
+                        status : false,
+                        message : "some error occured"
+                    })
+                }
+            })
+        } else {
+            res.status(400).json({
+                status : false,
+                message : "invalid token"
+            })
+        }
+    })
+})
+
+router.delete("/:id", (req, res) => {
+    tokenHelper.verifyToken(req.headers.token, (callback) => {
+        if(callback == "valid") {
+            let addressId = req.params.id;
+            sellerAddressModel.deleteById(addressId, (results) => {
+                if(results == "success") {
+                    res.status(201).json({
+                        status : true,
+                        message : "address deleted successfully"
+                    })
+                } else {
+                    res.status(400).json({
+                        status : false,
+                        message : "some error occured"
+                    })
+                }                
+            })
+        } else {
+            res.status(400).json({
+                status : false,
+                message : "invalid token"
+            })
+        }
+    })
+})
+
+router.get("/default/user", (req, res) => {
+    tokenHelper.verifyToken(req.headers.token, (callback) => {
+        if(callback == "valid") {
+            let userId = req.query.id;
+            sellerAddressModel.getBySellerDefault(userId, (results) => {
+                res.status(201).json({
+                    status : true,
+                    data : results
+                })
+            })
+        } else {
+            res.status(400).json({
+                status : false,
+                message : "invalid token"
+            })
+        }
+    })
+})
+
+
+router.put("/default/:id", (req, res) => {
+    tokenHelper.verifyToken(req.headers.token, (callback) => {
+        if(callback == "valid") {
+            let userId = req.body.userId;
+            let addressId = req.params.id;
+            sellerAddressModel.setNeutral(userId, (results) => {
+                if(results == "success") {
+                    sellerAddressModel.setBySellerDefault(addressId, (results) => {
+                        if(results == "success") {
+                            sellerAddressModel.getBySeller(userId, (results) => {
+                                res.status(201).json({
+                                    status : true,
+                                    data : results
+                                })
+                            })
+                        }
+                    })
+                }
+            })
+        } else {
+            res.status(400).json({
+                status : false,
+                message : "invalid token"
+            })
+        }
+    })
+})
+
+
+module.exports = router;

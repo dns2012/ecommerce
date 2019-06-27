@@ -22,6 +22,8 @@ const checkoutBuyer = require("./controllers/buyer/checkout");
 const authSeller = require("./controllers/seller/auth");
 const categorySeller = require("./controllers/seller/category");
 const productSeller = require("./controllers/seller/product");
+const userSeller = require("./controllers/seller/user");
+const addressSeller = require("./controllers/seller/address");
 
 // CROSS ORIGIN
 app.use((req, res, next) => {
@@ -54,6 +56,8 @@ app.use("/buyer/checkout", checkoutBuyer);
 app.use("/seller/auth", authSeller);
 app.use("/seller/category", categorySeller);
 app.use("/seller/product", productSeller);
+app.use("/seller/user", userSeller);
+app.use("/seller/address", addressSeller);
 
 
 // PUBLIC STATIC DIRECTORY
