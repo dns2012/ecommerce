@@ -24,6 +24,7 @@ const categorySeller = require("./controllers/seller/category");
 const productSeller = require("./controllers/seller/product");
 const userSeller = require("./controllers/seller/user");
 const addressSeller = require("./controllers/seller/address");
+const bankSeller = require("./controllers/seller/bank");
 
 // CROSS ORIGIN
 app.use((req, res, next) => {
@@ -58,6 +59,7 @@ app.use("/seller/category", categorySeller);
 app.use("/seller/product", productSeller);
 app.use("/seller/user", userSeller);
 app.use("/seller/address", addressSeller);
+app.use("/seller/bank", bankSeller);
 
 
 // PUBLIC STATIC DIRECTORY
