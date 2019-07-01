@@ -100,6 +100,7 @@ router.post("/", (req, res) => {
                                             shipment        :   shipment,
                                             total           :   totalSecond,
                                             expedition      :   JSON.stringify(expedition),
+                                            status          :   0,
                                             created_at      :   createdAt
                                         }
                                         var product = cart[i].product;

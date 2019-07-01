@@ -115,7 +115,7 @@ router.get("/user", (req, res) => {
                     total : total
                 }
                 res.status(200).json({
-                    message : "oke",
+                    status : true,
                     data : finalCart
                 })
             })

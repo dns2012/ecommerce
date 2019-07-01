@@ -32,7 +32,7 @@ module.exports = {
             let sqlTransactionOrder = `SELECT product.id, product.name, transaction_order_product.quantity,
                                       transaction_order_product.price FROM transaction_order INNER JOIN transaction_order_product
                                       ON transaction_order_product.transaction_order_id = transaction_order.id INNER JOIN product
-                                      ON product.id = transaction_order_product.product_id WHERE transaction_order.transaction_id=?`;
+                                      ON product.id = transaction_order_product.product_id WHERE transaction_order.id=?`;
             return database.query(sqlTransactionOrder, [transactionId])
         })
         .then(rows => {
