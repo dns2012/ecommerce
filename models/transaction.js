@@ -64,5 +64,11 @@ module.exports = {
         let sql = `UPDATE transaction SET payment=?, payment_attribute=?
                   WHERE id=?`
         database.query(sql, [payment, paymentAttribute, transactionId]);
-    }
+    },
+
+    updateResponsePayment : (transactionId, paymentResponse, callback) => {
+        let sql = `UPDATE transaction SET payment_response=?
+                  WHERE id=?`
+        database.query(sql, [paymentResponse, transactionId]);
+    },
 }

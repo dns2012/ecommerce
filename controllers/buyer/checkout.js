@@ -75,6 +75,7 @@ router.post("/", (req, res) => {
                         total : total + shipment,
                         payment : "",
                         payment_attribute : "",
+                        payment_response : "",
                         status : 0,
                         created_at : createdAt
                     }
@@ -157,6 +158,7 @@ router.post("/order", (req, res) => {
                             let bodyObject = Object.assign(paymentObject, transactionResults);
                             let bodyRequest = JSON.stringify(bodyObject);
                             paymentHelper.creditCard(bodyRequest, (results) => {
+                                transactionModel.updateResponsePayment(transactionId, results);
                                 let response = JSON.parse(results);
                                 if(response.status_code == 201) {
                                     res.status(201).json({
@@ -190,6 +192,7 @@ router.post("/order", (req, res) => {
                         let bodyObject = Object.assign(paymentObject, transactionResults);
                         let bodyRequest = JSON.stringify(bodyObject);
                         paymentHelper.bankTransferBCA(bodyRequest, (results) => {
+                            transactionModel.updateResponsePayment(transactionId, results);
                             let response = JSON.parse(results);
                             if(response.status_code == 201) {
                                 res.status(201).json({
@@ -214,6 +217,7 @@ router.post("/order", (req, res) => {
                         let bodyObject = Object.assign(paymentObject, transactionResults);
                         let bodyRequest = JSON.stringify(bodyObject);
                         paymentHelper.bankTransferBCA(bodyRequest, (results) => {
+                            transactionModel.updateResponsePayment(transactionId, results);
                             let response = JSON.parse(results);
                             if(response.status_code == 201) {
                                 res.status(201).json({
@@ -238,6 +242,7 @@ router.post("/order", (req, res) => {
                         let bodyObject = Object.assign(paymentObject, transactionResults);
                         let bodyRequest = JSON.stringify(bodyObject);
                         paymentHelper.bankTransferBCA(bodyRequest, (results) => {
+                            transactionModel.updateResponsePayment(transactionId, results);
                             let response = JSON.parse(results);
                             if(response.status_code == 201) {
                                 res.status(201).json({
@@ -263,6 +268,7 @@ router.post("/order", (req, res) => {
                         let bodyObject = Object.assign(paymentObject, transactionResults);
                         let bodyRequest = JSON.stringify(bodyObject);
                         paymentHelper.bankTransferBCA(bodyRequest, (results) => {
+                            transactionModel.updateResponsePayment(transactionId, results);
                             let response = JSON.parse(results);
                             if(response.status_code == 201) {
                                 res.status(201).json({
