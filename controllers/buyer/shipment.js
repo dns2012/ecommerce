@@ -186,7 +186,9 @@ router.post("/cost", (req, res) => {
 
             let request = http.request(options, function (response) {
                 var chunks = [];
-                response.on("data", function (chunk) {
+		// console.log(JSON.stringify(response, undefined, 2));
+                console.log(response)
+		response.on("data", function (chunk) {
                     chunks.push(chunk);
                 });
                 response.on("end", function () {
